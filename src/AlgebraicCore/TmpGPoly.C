@@ -45,8 +45,13 @@ using std::numeric_limits;
 using std::vector;
 
 namespace CoCoA
-{  
+{
 
+  bool handlersEnabled = false;
+  std::function<void(ConstRefRingElem p, ConstRefRingElem q, ConstRefRingElem s)> sPolyHandler = nullptr;
+  std::function<void(ConstRefRingElem p)> reductionStartHandler = nullptr;
+  std::function<void(ConstRefRingElem q)> reductionStepHandler = nullptr;
+  std::function<void(ConstRefRingElem r)> reductionEndHandler = nullptr;
 
   //---------class GPoly-------------------------------
 
@@ -281,7 +286,7 @@ void GPoly::myUpdateLenLPPLCDegComp()
     CoCoA_ASSERT(!IsInitialized(mySugar));
     mySugar = s;
   }
-  
+
 
   void GPoly::myAssignSPoly(const GPair& the_gp, const long the_age)
   {
@@ -290,8 +295,10 @@ void GPoly::myUpdateLenLPPLCDegComp()
     myMinimalGenLevel = -1;
     if (the_gp.IsInputPoly())
       myPolyValue = poly(the_gp.myFirstGPoly());
-    else
+    else {
       myPolySetSPoly(the_gp.myFirstGPoly(), the_gp.mySecondGPoly());
+      if ( handlersEnabled ) sPolyHandler(the_gp.myFirstGPoly().myPoly(), the_gp.mySecondGPoly().myPoly(), myPoly());
+    }
     myUpdateLenLPPLCDegComp();
     myAge = the_age;
     // MAX: do these things only if necessary.
@@ -367,7 +374,7 @@ clog << "operator+=: result " <<myPoly<< endl;
 //     TmpPPM->myDiv(raw(T2),raw(T),raw(T1));
 //     res=wdeg(T2);
 //   }//WDegLessSVar
-  
+
 //   degree GRingInfo::WDegLessSVarA(ConstRefPPMonoidElem T)const// wdeg(T)-wdeg(saturating to the power it has in T)
 //   {
 //     PPMonoid TmpPPM=owner(T);
@@ -397,7 +404,7 @@ clog << "operator+=: result " <<myPoly<< endl;
 //   }//WDegLessSVar
 
 // void GRingInfo::WDegLessSVarSmart(degree& res,
-//                                   ConstRefPPMonoidElem T1, 
+//                                   ConstRefPPMonoidElem T1,
 //                                   ConstRefPPMonoidElem T2)const
 // {
 //    PPMonoid TmpPPM=owner(T1);
@@ -406,7 +413,7 @@ clog << "operator+=: result " <<myPoly<< endl;
 // }//WDegLessSVarSmart
 
 // void GRingInfo::WDegLessSVarFake(degree& res,
-//                                  ConstRefPPMonoidElem T1, 
+//                                  ConstRefPPMonoidElem T1,
 //                                  ConstRefPPMonoidElem T2)const
 // {
 //    PPMonoid TmpPPM=owner(T1);

@@ -29,6 +29,7 @@
 #include "CoCoA/TmpGTypes.H"
 #include "CoCoA/utils.H"
 
+#include<functional>
 #include<list>
 // using std::list; // for GPolyList; GPolyPtrList;
 #include<vector>
@@ -46,6 +47,11 @@ enum ClearMarker {clear};
 
 class GPoly;
 
+extern bool handlersEnabled;
+extern std::function<void(ConstRefRingElem p, ConstRefRingElem q, ConstRefRingElem s)> sPolyHandler;
+extern std::function<void(ConstRefRingElem p)> reductionStartHandler;
+extern std::function<void(ConstRefRingElem q)> reductionStepHandler;
+extern std::function<void(ConstRefRingElem r)> reductionEndHandler;
 
 typedef std::list<GPoly> GPolyList;
 
@@ -232,7 +238,7 @@ typedef std::list<GPoly> GPolyList;
     bool IamNotToBeUsed() const { return myIamNotToBeUsedValue; }
     void mySetIamNotToBeUsed(const bool b) { myIamNotToBeUsedValue=b; }
     GPoly* myGetGPolyPtr() const { return myGPolyPtr; }
-    
+
   private:
     friend class Reductors;
     GPoly* myGPolyPtr;
@@ -281,7 +287,7 @@ typedef std::list<GPoly> GPolyList;
                               const Reductors& theReductors);
     // HERE TO BE NOTICED friend const SparsePolyRing& owner(const Reductors&);
     // HERE TO BE NOTICED friend const PPMonoid& PPM(const Reductors&);
-			
+
     // This function takes params that are part of GReductor class.
     // In the future, a new interface class will be built that have this funct. as a member
     // This new class would insulate Reductors from end user, which will see only

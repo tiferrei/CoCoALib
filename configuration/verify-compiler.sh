@@ -58,16 +58,6 @@ int main()
 }
 EOF
 
-# Try plain compiler (without CXXFLAGS):
-$CXX test-compiler-type.C -o test-compiler-type  > LogFile  2>&1
-if [ $? -ne 0 -o \! -f test-compiler-type -o \! -x test-compiler-type ]
-then
-  echo "ERROR: Are you sure \"$CXX\" is a C++ compiler?   $SCRIPT_NAME"  > /dev/stderr
-  echo "LOGFILE: $TMP_DIR/LogFile   $SCRIPT_NAME"                        > /dev/stderr
-  exit 1
-fi
-/bin/rm test-compiler-type  # not necessary, just being tidy :-)
-
 # Try compiler with CXXFLAGS:
 $CXX $CXXFLAGS test-compiler-type.C -o test-compiler-type  > LogFile  2>&1
 if [ $? -ne 0 -o \! -f test-compiler-type -o \! -x test-compiler-type ]

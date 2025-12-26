@@ -51,7 +51,7 @@ int main() {
 EOF
 
 # First try with no compiler flag...
-"$CXX"  language-version.C  -o language-version  >> LogFile  2>& 1 
+"$CXX" $CXXFLAGS language-version.C  -o language-version  >> LogFile  2>& 1
 if [ $? -ne 0 ]
 then
     echo "ERROR: compilation unexpectedly failed; is $CXX a c++ compiler?   $SCRIPT_NAME" > /dev/stderr
@@ -76,7 +76,7 @@ fi
 # Compilation without flag is not C++14 standard; try with -std=c++14
 
 CXX14="-std=c++14"
-"$CXX"  $CXX14  language-version.C  -o language-version  >> LogFile  2>& 1 
+"$CXX"  $CXXFLAGS $CXX14  language-version.C  -o language-version  >> LogFile  2>& 1
 if [ $? -ne 0 ]
 then
     echo "ERROR: compilation with flag $CXX14 failed   $SCRIPT_NAME"                      > /dev/stderr

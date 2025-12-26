@@ -13,7 +13,7 @@ mktempdir()
 {
     TODAY=`date "+%Y%m%d"`
     TIME=`date "+%H%M%S"`
-    TMP_DIR="/tmp/CoCoALib-config-$USER/$TODAY/$1-$TIME-$$"
+    TMP_DIR="/tmp/CoCoALib-config-$USER/$USER-$TODAY/$1-$TIME-$$"
     /bin/rm -rf "$TMP_DIR"  &&  /bin/mkdir -p "$TMP_DIR"
     if [ $? -ne 0 ]
     then

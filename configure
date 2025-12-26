@@ -48,7 +48,7 @@ fi
 INSTALL_CMD="install $INSTALL_FLAG"  # install -S is better on BSD (or MacOSX) but not portable
 command -v install > /dev/null 2>&1
 if [ $? -ne 0 ]
-then 
+then
   INSTALL_CMD="/bin/cp -f"  # should this be "/bin/cp -pf"  ???
 fi
 
@@ -139,7 +139,7 @@ do
 	NO_GUI_REASON="(configure option: --only-cocoalib)"  # will not actually be used
 	AVOID_READLINE=yes ;;
 
-    
+
     ( --with-boost-hdr-dir=~* )
        BOOST_INC_DIR="$HOME`echo "$option" | cut -f 2- -d~`" ;;
 
@@ -381,11 +381,11 @@ then
     echo "---------------------------------------------------------------------"
 else
     echo "------------------------------------------------------------------------"
-    echo "Starting configuration process for CoCoALib only; no CoCoA-5 (or Qt-GUI)"    
+    echo "Starting configuration process for CoCoALib only; no CoCoA-5 (or Qt-GUI)"
     echo "------------------------------------------------------------------------"
 fi
 echo
-    
+
 
 ##################################################################
 # Rename the old configuration file (if it exists).
@@ -396,9 +396,9 @@ if [ -f "$CONFIG_FILE" ]
 then
   /bin/rm -rf "$CONFIG_FILE.old"
   /bin/mv "$CONFIG_FILE" "$CONFIG_FILE.old"
-  echo 
+  echo
   echo "**NOTE**  moved previous config file into $CONFIG_FILE.old"
-  echo 
+  echo
   echo
 fi
 
@@ -420,6 +420,7 @@ fi
 # Next two lines required by the scripts which check GMP (see below).
 export CXX
 export CXXFLAGS
+export GMP_LIB_EXTN
 
 # Check compiler and flags are sane.
 # If all is well, result is either "gnu" or "not gnu" & return code is 0.
@@ -571,7 +572,8 @@ else
 	( *.dll.a )
 	GMP_LIB_SUFFIX=dll.a ;;
 	( *.a )
-	GMP_LIB_SUFFIX=a ;;
+	GMP_LIB_SUFFIX=a
+    GMP_LIB_EXTN=a ;;
 	( *.so )
 	GMP_LIB_SUFFIX=so ;;
 	( *.dylib )
@@ -723,7 +725,7 @@ then
       /bin/cat "$ERR_MESGS"                                                    > /dev/stderr
       exit 1
     fi
-        
+
     LIBTERMCAP=`$SCRIPT_DIR/readline-check-cxxflags.sh "$READLINE_HDR" "$READLINE_LIB"`
     if [ $? = 0 ]
     then
@@ -745,7 +747,7 @@ COCOA5_CXX_DEFINES="$READLINE_FLAG"
 # external library: CDD (GMP)
 ##################################################################
 if [ -n "$CDD_LIB" ]
-then 
+then
   # Check the file passed as CDD library is at least a readable file.
   if [ \! -f "$CDD_LIB" -o \! -r "$CDD_LIB" ]
   then
@@ -791,7 +793,7 @@ fi
 # Check the file passed as libfrobby.a is at least a readable file.
 # Convert the file name into an absolute path (in case it was not).
 if [ -n "$FROBBY_LIB" ]
-then 
+then
   if [ \! -f "$FROBBY_LIB" -o \! -r "$FROBBY_LIB" ]
   then
     echo "$0: ERROR: Specified FROBBY library is not a readable file \"$FROBBY_LIB\""  > /dev/stderr
@@ -830,7 +832,7 @@ fi
 # Check the file passed as GFAN library is at least a readable file.
 # Convert the file name into an absolute path (in case it was not).
 if [ -n "$GFAN_LIB" ]
-then 
+then
   if [ "$HAVE_CDD" = "no" ]
   then
     echo "$0: ERROR: GFAN library requires also \"libcddgmp\""  > /dev/stderr
@@ -868,7 +870,7 @@ fi
 # Check the file passed as GSL library is at least a readable file.
 # Convert the file name into an absolute path (in case it was not).
 if [ -n "$GSL_LIB" ]
-then 
+then
   if [ \! -f "$GSL_LIB" -o \! -r "$GSL_LIB" ]
   then
     echo "$0: ERROR: Specified GSL library is not a readable file \"$GSL_LIB\""  > /dev/stderr
@@ -904,7 +906,7 @@ fi
 # external library: MATHSAT
 ##################################################################
 if [ -n "$MATHSAT_LIB" ]
-then 
+then
   # Check the file passed as libmathsat is at least a readable file:
   if [ \! -f "$MATHSAT_LIB" -o \! -r "$MATHSAT_LIB" ]
   then
@@ -918,7 +920,7 @@ then
     echo "$0: ERROR: specifying that you want the C++ library too (see GMP doc for details)."   > /dev/stderr
     exit 1
   fi
-  
+
   HAVE_MATHSAT=yes
   # These lines should put absolute paths in LIB_DIR:
   MATHSAT_LIB_NAME=$(basename "$MATHSAT_LIB")
@@ -945,7 +947,7 @@ fi
 # external library: NORMALIZ
 ##################################################################
 if [ -z "$NORMALIZ_LIB" ]
-then 
+then
   HAVE_NORMALIZ=no
 else
   # Check the path passed as libnormaliz is at least a readable file:

@@ -196,9 +196,10 @@ degree HereForProfilingOnlyWDeg(ConstRefPPMonoidElem cofactor1)
       {
         s->myUpdate(F, g);
         F->myReduce(poly(g), NumTerms(g));// MAX: here the real work is done
+        if ( handlersEnabled ) reductionStepHandler(poly(g));
       }
       else
-        F->myMoveToNextLM();      
+        F->myMoveToNextLM();
       if ( IsActiveZero(F) || ActiveLPP(F) < LPPForOrd(g) ) return;
       //      PMF.myAssign(ActiveLPP(F));
       PMF = exponents(expv, ActiveLPP(F));;
@@ -286,6 +287,7 @@ degree HereForProfilingOnlyWDeg(ConstRefPPMonoidElem cofactor1)
   void GPoly::myReduce(const Reductors& theReductors)
   {
     if ( IsZero(*this) ) return;
+    if ( handlersEnabled ) reductionStartHandler(myPoly());
     ReductionCog F = ChooseReductionCogGeobucket(myGRingInfo());
     //    std::cout << "myreduce1: F is " << F << std::endl;
     F->myAssignReset(myPolyValue, myNumTerms); // myPolyValue gets 0
@@ -301,6 +303,7 @@ degree HereForProfilingOnlyWDeg(ConstRefPPMonoidElem cofactor1)
     if ( !IsZero(*this) && !IsOne(myLCValue) ) // makes myPolyValue monic
       if ( myGRingInfo().myCoeffRingType()==CoeffEncoding::Field )
         myGRingInfo().myNewSPR()->myDivByCoeff(raw(myPolyValue), raw(myLCValue));
+    if ( handlersEnabled ) reductionEndHandler(myPoly());
     // if CoeffEncoding::Field myRelease does NOT make poly monic
     // if CoeffEncoding::FrFldOfGCDDomain myRelease makes poly content free
   }

@@ -59,7 +59,7 @@ fi
 
 
 GMP_LDLIB=-lgmp-symlink
-/bin/ls "$EXTLIB_DIR_FULL"/lib/libgmp-symlink.*  > /dev/null  2>&1
+/bin/ls "$COCOA_EXTLIB_DIR"/lib/libgmp-symlink."$GMP_LIB_EXTN"  > /dev/null  2>&1
 if [ $? -ne 0 ]
 then
   GMP_LDLIB=-lgmp

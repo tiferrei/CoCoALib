@@ -74,7 +74,7 @@ EOF
 
 # Use c++ compiler specified in CXX; no need to specify libgmp as all info is in header file!!
 echo "$CXX -I"$EXTLIB_DIR_FULL/include"  test-gmp-version.C  -o test-gmp-version"  > LogFile
-$CXX -I"$EXTLIB_DIR_FULL/include"  test-gmp-version.C  -o test-gmp-version  >> LogFile 2>&1
+$CXX $CXXFLAGS -I"$EXTLIB_DIR_FULL/include"  test-gmp-version.C  -o test-gmp-version  >> LogFile 2>&1
 
 # Check whether compilation failed; if so, complain.
 if [ $? -ne 0 ]
